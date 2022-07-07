@@ -27,11 +27,25 @@
     </style>
 </head>
 <body>
-    <ul id="#messages"></ul>
+    <ul id="messages"></ul>
     <form>
         <input type="text" name="" id="text_box">
         <button>Kirim</button>
     </form>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        var socket = io();
+
+        $('form').submit(function(){
+            socket.emit('newMessage', $('#text_box').val());
+            $('#text_box').val('');
+            return false;
+        });
+
+        socket.on('newMessage', function(msg) {
+            $('#messages').append('<li>' + msg + '</li>');
+        });
+    </script>
 </body>
 </html>
