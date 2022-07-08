@@ -20,6 +20,9 @@ io.on('connection', function(socket) {
             users[socket.id] = username;
             usernames.push(username);
             socket.emit('registerRespond', true);
+            
+            io.emit('addOnlineUsers', usernames);
+
             console.log(users);
             console.log("========");
             console.log(usernames);
@@ -32,7 +35,14 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function(msg) {
-        socket.broadcast.emit('newMessage', 'someone left the chat');
+        socket.broadcast.emit('newMessage', 'someone left the chat');        
+
+        var index = usernames.indexOf(users[socket.id]);
+        usernames.splice(index, 1);
+
+        delete users[socket.id];
+
+        io.emit('addOnlineUsers', usernames);
     });
 
 });
