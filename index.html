@@ -76,9 +76,20 @@
         });
 
         $('#submit_name').click(function() {
-            $('#chatroom').removeClass('hidden');
-            $('#homepage').addClass('hidden');            
+            if ($('#nama_user') != '') {
+                username = $('#nama_user').val();
+                socket.emit('registerUser', username);
+            }           
         })
+
+        socket.on('registerRespond', function(status) {
+            if (status == false) {
+                alert('Username already used')
+            }else{
+                $('#chatroom').removeClass('hidden');
+                $('#homepage').addClass('hidden');  
+            }
+        });
     </script>
 </body>
 </html>
