@@ -84,6 +84,7 @@
             username = $('#nama_user').val();
             socket.emit('newMessage', username + ' ' + $('#text_box').val());
             $('#text_box').val('');
+            isTyping = false;
             return false;
         });
 
@@ -97,10 +98,11 @@
 
         socket.on('newMessage', function(msg) {
             $('#messages').append('<li>' + msg + ' ||pada ' + Date() + '</li>');
+            $('.temporary').remove();
         });
 
         $('#submit_name').click(function() {
-            if ($('#nama_user') != '') {
+            if ($('#nama_user').val() != '') {
                 username = $('#nama_user').val();
                 socket.emit('registerUser', username);
             }           
@@ -108,11 +110,23 @@
 
         socket.on('registerRespond', function(status) {
             if (status == false) {
-                alert('Username already used')
+                alert('Username already used');
             }else{
                 $('#chatroom').removeClass('hidden');
                 $('#homepage').addClass('hidden');  
             }
+        });
+
+        var isTyping = false;
+        $('#text_box').focus(function(){
+            if (isTyping == false) {
+                socket.emit('newTyping', username + ' sedang mengetik...');
+            }
+            isTyping = true;
+        });
+
+        socket.on('newTyping', function(msg){
+            $('#messages').append('<li class="temporary">' + msg + '</li>');
         });
     </script>
 </body>

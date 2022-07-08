@@ -34,6 +34,10 @@ io.on('connection', function(socket) {
         console.log('Chat baru: ' + msg);
     });
 
+    socket.on('newTyping', function(msg) {
+        io.emit('newTyping', msg);
+    });
+
     socket.on('disconnect', function(msg) {
         socket.broadcast.emit('newMessage', 'someone left the chat');        
 
