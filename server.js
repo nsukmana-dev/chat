@@ -8,15 +8,17 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket) {
 
+    socket.broadcast.emit('newMessage', 'someone join chat');
+
     socket.on('newMessage', function(msg) {
         io.emit('newMessage', msg);
         console.log('Chat baru: ' + msg);
     });
 
     socket.on('disconnect', function(msg) {
-       console.log('user disconnected'); 
+        socket.broadcast.emit('newMessage', 'someone left the chat');
     });
-    
+
 });
 
 http.listen(3000, function () {
