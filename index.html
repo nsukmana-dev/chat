@@ -13,11 +13,26 @@
             background: skyblue;
             padding: 20px;
         }
-        input{
+        li{
+            padding: 5px;
+        }
+        li:nth-child(even){
+            background: black;
+            color: white;
+        }
+        #nama_user{
             float: left;
-            width: 70%;
+            width: 20%;
             height: 30px;
             border: none;
+        }
+        #text_box{
+            float: left;
+            width: 40%;
+            height: 30px;
+            border: none;
+            margin-left: 10px;
+            margin-right: 10px;
         }
         button{
             float: left;
@@ -29,22 +44,25 @@
 <body>
     <ul id="messages"></ul>
     <form>
-        <input type="text" name="" id="text_box">
+        <input type="text" name="" id="nama_user" placeholder="Nama...">
+        <input type="text" name="" id="text_box" placeholder="Tulis sesuatu">
         <button>Kirim</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         var socket = io();
+        var username = '';
 
         $('form').submit(function(){
-            socket.emit('newMessage', $('#text_box').val());
+            username = $('#nama_user').val();
+            socket.emit('newMessage', username + ' ' + $('#text_box').val());
             $('#text_box').val('');
             return false;
         });
 
         socket.on('newMessage', function(msg) {
-            $('#messages').append('<li>' + msg + '</li>');
+            $('#messages').append('<li>' + msg + ' ||pada ' + Date() + '</li>');
         });
     </script>
 </body>
