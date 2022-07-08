@@ -24,11 +24,10 @@
             float: left;
             width: 20%;
             height: 30px;
-            border: none;
         }
         #text_box{
             float: left;
-            width: 40%;
+            width: 70%;
             height: 30px;
             border: none;
             margin-left: 10px;
@@ -39,15 +38,26 @@
             width: 20%;
             height: 33px;
         }
+        .hidden{
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <ul id="messages"></ul>
-    <form>
-        <input type="text" name="" id="nama_user" placeholder="Nama...">
-        <input type="text" name="" id="text_box" placeholder="Tulis sesuatu">
-        <button>Kirim</button>
-    </form>
+    <div id="homepage">
+        <h1>Welcome to the chat room...</h1>
+        <input type="text" id="nama_user" placeholder="Nama kamu...">
+        <button id="submit_name">Join!</button>
+    </div>
+
+    <div id="chatroom" class="hidden">
+        <ul id="messages"></ul>
+        <form>
+            <input type="text" name="" id="text_box" placeholder="Tulis sesuatu">
+            <button>Kirim</button>
+        </form>
+    </div>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
@@ -64,6 +74,11 @@
         socket.on('newMessage', function(msg) {
             $('#messages').append('<li>' + msg + ' ||pada ' + Date() + '</li>');
         });
+
+        $('#submit_name').click(function() {
+            $('#chatroom').removeClass('hidden');
+            $('#homepage').addClass('hidden');            
+        })
     </script>
 </body>
 </html>
